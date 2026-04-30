@@ -18,33 +18,12 @@ import { RefreshCw } from "lucide-react";
 const BLUR_FADE_DELAY = 0.04;
 
 export default function Page() {
-  const [data, setData] = useState<any>(STATIC_DATA);
-  const [loading, setLoading] = useState(true);
+  const data = STATIC_DATA;
   const [currentPage, setCurrentPage] = useState(1);
   const [currentWorkPage, setCurrentWorkPage] = useState(1);
 
   const projectsPerPage = 4;
   const workPerPage = 4;
-
-  useEffect(() => {
-    const fetchPortfolioData = async () => {
-      try {
-        const response = await fetch('/api/admin/resume');
-        if (response.ok) {
-          const dbData = await response.json();
-          if (dbData && dbData.name) {
-            setData(dbData);
-          }
-        }
-      } catch (error) {
-        console.error('Failed to fetch dynamic portfolio data:', error);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchPortfolioData();
-  }, []);
 
   const projects = data.projects || [];
   const work = data.work || [];
@@ -61,7 +40,11 @@ export default function Page() {
   const currentWork = work.slice(workStartIndex, workStartIndex + workPerPage);
 
   return (
-    <main className="flex flex-col min-h-[100dvh] space-y-10 pb-20 py-12 sm:py-24">
+    <main className="flex flex-col min-h-[100dvh] space-y-10 pb-20 py-12 sm:py-24 relative">
+      {/* Modern ambient background glow */}
+      <div className="fixed inset-0 -z-10 h-full w-full bg-white dark:bg-[#0a0a0a]">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.3),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(0,0,0,0))]" />
+      </div>
       <section id="hero">
         <div className="mx-auto w-full max-w-2xl space-y-8">
           <div className="gap-2 flex justify-between">
@@ -104,13 +87,13 @@ export default function Page() {
       </section>
 
       <section id="about">
-        <BlurFade delay={BLUR_FADE_DELAY * 3}>
+        <BlurFade delay={BLUR_FADE_DELAY * 3} inView>
           <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
             <span className="w-8 h-px bg-primary/20"></span>
             About Me
           </h2>
         </BlurFade>
-        <BlurFade delay={BLUR_FADE_DELAY * 4}>
+        <BlurFade delay={BLUR_FADE_DELAY * 4} inView>
           <Markdown className="prose max-w-full text-pretty font-sans text-sm text-muted-foreground dark:prose-invert leading-relaxed">
             {data.summary}
           </Markdown>
@@ -119,7 +102,7 @@ export default function Page() {
 
       <section id="work">
         <div className="space-y-12 w-full py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 5}>
+          <BlurFade delay={BLUR_FADE_DELAY * 5} inView>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-full bg-primary/10 text-primary px-4 py-1.5 text-xs font-bold uppercase tracking-wider">
@@ -136,6 +119,7 @@ export default function Page() {
               <BlurFade
                 key={`${item.company}-${item.title}-${currentWorkPage}`}
                 delay={BLUR_FADE_DELAY * 6 + id * 0.05}
+                inView
               >
                 <ResumeCard
                   logoUrl={item.logoUrl}
@@ -179,7 +163,7 @@ export default function Page() {
 
       <section id="education">
         <div className="flex min-h-0 flex-col gap-y-4">
-          <BlurFade delay={BLUR_FADE_DELAY * 9}>
+          <BlurFade delay={BLUR_FADE_DELAY * 9} inView>
             <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
               <span className="w-8 h-px bg-primary/20"></span>
               Education
@@ -189,6 +173,7 @@ export default function Page() {
             <BlurFade
               key={item.school}
               delay={BLUR_FADE_DELAY * 10 + id * 0.05}
+              inView
             >
               <ResumeCard
                 href={item.href}
@@ -205,7 +190,7 @@ export default function Page() {
 
       <section id="skills">
         <div className="flex min-h-0 flex-col gap-y-4">
-          <BlurFade delay={BLUR_FADE_DELAY * 11}>
+          <BlurFade delay={BLUR_FADE_DELAY * 11} inView>
             <h2 className="text-xl font-bold mb-4 flex items-center gap-2">
               <span className="w-8 h-px bg-primary/20"></span>
               Technical Stack
@@ -213,7 +198,7 @@ export default function Page() {
           </BlurFade>
           <div className="flex flex-wrap gap-2">
             {skills.map((skill: string, id: number) => (
-              <BlurFade key={skill} delay={BLUR_FADE_DELAY * 12 + id * 0.05}>
+              <BlurFade key={skill} delay={BLUR_FADE_DELAY * 12 + id * 0.05} inView>
                 <Badge variant="secondary" className="px-3 py-1 bg-primary/5 hover:bg-primary/10 border-none transition-colors">
                   {skill}
                 </Badge>
@@ -225,7 +210,7 @@ export default function Page() {
 
       <section id="projects">
         <div className="space-y-12 w-full py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 13}>
+          <BlurFade delay={BLUR_FADE_DELAY * 13} inView>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-full bg-primary/10 text-primary px-4 py-1.5 text-xs font-bold uppercase tracking-wider">
@@ -242,6 +227,7 @@ export default function Page() {
               <BlurFade
                 key={project.title}
                 delay={BLUR_FADE_DELAY * 14 + id * 0.05}
+                inView
               >
                 <ProjectCard
                   href={project.href}
@@ -285,7 +271,7 @@ export default function Page() {
 
       <section id="hackathons">
         <div className="space-y-12 w-full py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 17}>
+          <BlurFade delay={BLUR_FADE_DELAY * 17} inView>
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
                 <div className="inline-block rounded-full bg-primary/10 text-primary px-4 py-1.5 text-xs font-bold uppercase tracking-wider">
@@ -297,12 +283,13 @@ export default function Page() {
               </div>
             </div>
           </BlurFade>
-          <BlurFade delay={BLUR_FADE_DELAY * 18}>
+          <BlurFade delay={BLUR_FADE_DELAY * 18} inView>
             <ul className="mb-4 ml-4 divide-y divide-dashed border-l border-primary/20">
               {hackathons.map((item: any, id: number) => (
                 <BlurFade
                   key={item.title + item.dates}
                   delay={BLUR_FADE_DELAY * 19 + id * 0.05}
+                  inView
                 >
                   <HackathonCard
                     title={item.title}
@@ -321,7 +308,7 @@ export default function Page() {
 
       <section id="contact">
         <div className="grid items-center justify-center gap-4 px-4 text-center md:px-6 w-full py-12">
-          <BlurFade delay={BLUR_FADE_DELAY * 20}>
+          <BlurFade delay={BLUR_FADE_DELAY * 20} inView>
             <div className="space-y-3">
               <div className="inline-block rounded-full bg-primary/10 text-primary px-4 py-1.5 text-xs font-bold uppercase tracking-wider">
                 Connect

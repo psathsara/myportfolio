@@ -49,7 +49,7 @@ export const ResumeCard = ({
         whileHover={{ x: 5 }}
         transition={{ duration: 0.2, ease: "easeOut" }}
       >
-        <Card className="flex p-3 sm:p-4 group hover:bg-muted/50 transition-colors duration-300">
+        <Card className="flex p-3 sm:p-4 group border border-white/10 bg-white/40 dark:bg-white/5 backdrop-blur-md hover:border-primary/50 hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.1)] transition-all duration-500 ease-out">
           <div className="flex-none">
             <Avatar className="border size-10 sm:size-12 m-auto bg-muted-background dark:bg-foreground">
               <AvatarImage

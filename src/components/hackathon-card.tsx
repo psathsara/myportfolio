@@ -24,14 +24,14 @@ export function HackathonCard({
   links,
 }: Props) {
   return (
-    <li className="relative ml-10 py-4">
-      <div className="absolute -left-16 top-2 flex items-center justify-center bg-white rounded-full">
+    <li className="relative ml-10 py-4 group">
+      <div className="absolute -left-16 top-2 flex items-center justify-center bg-white rounded-full shadow-md group-hover:scale-110 transition-transform duration-300">
         <Avatar className="border size-12 m-auto">
           <AvatarImage src={image} alt={title} className="object-contain" />
           <AvatarFallback>{title[0]}</AvatarFallback>
         </Avatar>
       </div>
-      <div className="flex flex-1 flex-col justify-start gap-1">
+      <div className="flex flex-1 flex-col justify-start gap-1 p-4 rounded-xl border border-white/10 bg-white/40 dark:bg-white/5 backdrop-blur-md hover:border-primary/50 hover:shadow-[0_0_30px_-5px_rgba(0,0,0,0.1)] dark:hover:shadow-[0_0_30px_-5px_rgba(255,255,255,0.1)] transition-all duration-500 ease-out">
         {dates && (
           <time className="text-xs text-muted-foreground">{dates}</time>
         )}
